@@ -20,60 +20,24 @@ Splits / Extracts the current url or a given one into its partials.
 
 ## Methods
 
-- getProtocol();
-- getAuthorization();
-- getUsername();
-- getPassword();
-- getDomain();
-- getPort();
-- getDomainList();
-- getDomainLevels();
-- getRequest();
-- getPath();
-- getPathList();
-- getFile();
-- getFileName();
-- getFileExtension();
-- getDirectory();
-- getDirectoryList();
-- getQuery();
-- getQueryList();
-- getQueryObject();
-- getQueryValue(param);
-- getFragment();
-- getAll();
+### getQueryValue(param);
+- Argument(s): `string` **param** - Parameter in the url query
+- Return: `string|null` The value of the given parameter or null if the parameter doesn't exist
 
 
 ## Usage and Example
 
 ```javascript
-    var url = 'https://username:password@www.subdomain.example.com:1234/folder/subfolder/index.html?search=products&sort=false#top';
-       
-    console.log(urlSplit(url).getProtocol());          // 'https'
-    console.log(urlSplit(url).getAuthorization());     // 'username:password
-    console.log(urlSplit(url).getUsername());          // 'username'
-    console.log(urlSplit(url).getPassword());          // 'password'
-    console.log(urlSplit(url).getDomain());            // 'www.subdomain.example.com'
-    console.log(urlSplit(url).getPort());              // '1234'
-    console.log(urlSplit(url).getDomainList());        // ['www', 'subdomain', 'example', 'com']
-    console.log(urlSplit(url).getDomainLevels());      // ['com', 'example', 'subdomain', 'www']
-    console.log(urlSplit(url).getRequest());           // '/folder/subfolder/index.html?search=products&sort=false#top'
-    console.log(urlSplit(url).getPath());              // '/folder/subfolder/index.html'
-    console.log(urlSplit(url).getPathList());          // ['/', 'folder/', 'subfolder/', 'index.html']
-    console.log(urlSplit(url).getFile());              // 'index.html'
-    console.log(urlSplit(url).getFileName());          // 'index'
-    console.log(urlSplit(url).getFileExtension());     // 'html'
-    console.log(urlSplit(url).getDirectory());         // '/folder/subfolder/'
-    console.log(urlSplit(url).getDirectoryList());     // ['/', 'folder/', 'subfolder/']
-    console.log(urlSplit(url).getQuery());             // 'search=products&sort=false#top'
-    console.log(urlSplit(url).getQueryList());         // ['search=products', 'sort=false']
-    console.log(urlSplit(url).getQueryObject());       // { search: products, sort: false}
-    console.log(urlSplit(url).getFragment());          // 'top'
-    console.log(urlSplit(url).getQueryValue('search'); // 'products'
-    console.log(urlSplit(url).getQueryValue('sort');   // 'false'
-    console.log(urlSplit(url).getAll());
-    // Output
-    /* {
+    var urlString      = 'https://username:password@www.subdomain.example.com:1234/folder/subfolder/index.html?search=products&sort=false#top',
+        url            = urlSplit(urlString),
+        urlQueryParam1 = url.getQueryValue('search'),
+        urlQueryParam2 = url.getQueryValue('sort'),
+        urlQueryParam3 = url.getQueryValue('undefined');
+
+    console.log('url: ', url);
+
+    /* Output:
+     * {
      *     protocol      : 'https',
      *     authorization : 'username:password,
      *     username      : 'username',
@@ -93,7 +57,22 @@ Splits / Extracts the current url or a given one into its partials.
      *     query         : 'search=products&sort=false#top',
      *     queryList     : ['search=products', 'sort=false'],
      *     queryObject   : { search: products, sort: false},
-     *     fragment      : 'top'
+     *     fragment      : 'top',
+     *     getQueryValue : getQueryValue(param)
      * }
      */
+
+    console.log('urlQueryParam1: ', urlQueryParam1);
+
+    // Output: 'products'
+
+
+    console.log('urlQueryParam2: ', urlQueryParam2);
+
+    // Output: 'false'
+
+
+    console.log('urlQueryParam3: ', urlQueryParam3);
+
+    // Output: null
 ```
