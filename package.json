@@ -1,0 +1,29 @@
+{
+    "name"        : "urlSplit",
+    "version"     : "1.0.0",
+    "description" : "Splits / Extracts the current url or a given one into its partials.",
+    "keywords" : [
+        "file",
+        "loading",
+        "async",
+        "javascript"
+    ],
+    "repository" : {
+        "type": "git",
+        "url": "https://github.com/hans-sperling/urlSplit"
+    },
+    "devDependencies" : {
+        "grunt"                : "1.x.x",
+        "grunt-cli"            : "1.2.x",
+        "grunt-contrib-uglify" : "latest",
+        "grunt-contrib-concat" : "latest"
+    },
+    "bugs" : {
+        "url"   : "https://github.com/hans-sperling/urlSplit/issues",
+        "email" : "info@bluejade.de"
+    },
+    "contributors" : [{
+        "name"  : "Danny Grübl",
+        "email" : "info@bluejade.de"
+    }]
+}

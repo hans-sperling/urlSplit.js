@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>fe-dev-tools</title>
+        <script src="../src/urlSplit.js"></script>
+    </head>
+    <body>
+        <script>
+            var url = 'https://username:password@www.subdomain.example.com:1234/folder/subfolder/index.html?search=products&sort=false#top';
+
+            console.log(urlSplit(url).getAll());
+        </script>
+    </body>
+</html>
