@@ -1,3 +1,4 @@
+/*! urlSplit - Splits / Extracts the current url or a given one into its partials. - Version: 1.1.0 */
 /**
  * Splits / Extracts the current url or a given one into its partials.
  *
@@ -241,6 +242,7 @@ function urlSplit(url) {
             request;
 
         if (cacheEnabled && cached !== null) {
+            console.log('cached');
             return cached;
         }
 
