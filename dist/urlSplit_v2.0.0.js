@@ -1,4 +1,4 @@
-/*! urlSplit - Splits / Extracts the current url or a given one into its partials. - Version: 1.1.0 */
+/*! urlSplit - Splits / Extracts the current url or a given one into its partials. - Version: 2.0.0 */
 /**
  * Splits / Extracts the current url or a given one into its partials.
  *
@@ -33,7 +33,6 @@ function urlSplit(url) {
         },
         cache        = reset;
 
-
     // If no url is given the current page request will be taken.
     url = url ? url : getUrl();
 
@@ -41,6 +40,7 @@ function urlSplit(url) {
     /**
      * Returns the protocol of the given url.
      *
+     * @private
      * @returns {string}
      */
     function getProtocol() {
@@ -63,6 +63,7 @@ function urlSplit(url) {
      * Returns the authorization of the given url.
      * A normal syntax of an authorization is {username}:{password}@example.com or only {username}@example.com
      *
+     * @private
      * @returns {string}
      */
     function getAuthorization() {
@@ -90,6 +91,7 @@ function urlSplit(url) {
     /**
      * Returns the username from the authorization part of the given url.
      *
+     * @private
      * @returns {string}
      */
     function getUsername() {
@@ -112,6 +114,7 @@ function urlSplit(url) {
     /**
      * Returns the password from the authorization part of the given url.
      *
+     * @private
      * @returns {string}
      */
     function getPassword() {
@@ -134,6 +137,7 @@ function urlSplit(url) {
     /**
      * Returns the complete domain of the given url.
      *
+     * @private
      * @returns {string}
      */
     function getDomain() {
@@ -166,6 +170,7 @@ function urlSplit(url) {
     /**
      * Returns the domain parts of the given url as array.
      *
+     * @private
      * @returns {Array}
      */
     function getDomainList() {
@@ -188,6 +193,7 @@ function urlSplit(url) {
     /**
      * Returns the domain parts of the given url as array in order of their level.
      *
+     * @private
      * @returns {Array}
      */
     function getDomainLevels() {
@@ -210,6 +216,7 @@ function urlSplit(url) {
     /**
      * Returns the port of the given url.
      *
+     * @private
      * @returns {string}
      */
     function getPort() {
@@ -234,6 +241,7 @@ function urlSplit(url) {
     /**
      * Returns the request of the given url.
      *
+     * @private
      * @returns {string}
      */
     function getRequest() {
@@ -242,7 +250,6 @@ function urlSplit(url) {
             request;
 
         if (cacheEnabled && cached !== null) {
-            console.log('cached');
             return cached;
         }
 
@@ -263,6 +270,7 @@ function urlSplit(url) {
     /**
      * Returns the path from the request part of the given url.
      *
+     * @private
      * @returns {string}
      */
     function getPath() {
@@ -284,6 +292,7 @@ function urlSplit(url) {
     /**
      * Returns the path parts from the request part of the given url as array.
      *
+     * @private
      * @returns {Array}
      */
     function getPathList() {
@@ -323,6 +332,7 @@ function urlSplit(url) {
     /**
      * Returns the file from the request part of the given url.
      *
+     * @private
      * @returns {string}
      */
     function getFile() {
@@ -359,6 +369,7 @@ function urlSplit(url) {
     /**
      * Returns the filename from the request part of the given url.
      *
+     * @private
      * @returns {string}
      */
     function getFileName() {
@@ -387,6 +398,7 @@ function urlSplit(url) {
     /**
      * Returns the file extension from the request part of the given url.
      *
+     * @private
      * @returns {string}
      */
     function getFileExtension() {
@@ -412,7 +424,8 @@ function urlSplit(url) {
      * Returns the directory from the request part of the given url.
      *
      * The directory is the path excluding the requested file.
-     * 
+     *
+     * @private
      * @returns {string}
      */
     function getDirectory() {
@@ -437,6 +450,7 @@ function urlSplit(url) {
      *
      * The directory parts are the path parts excluding the file.
      *
+     * @private
      * @returns {Array}
      */
     function getDirectoryList() {
@@ -466,7 +480,8 @@ function urlSplit(url) {
      * Returns the query from the request part of the given url.
      *
      * The query is also known as the search part of a request.
-     * 
+     *
+     * @private
      * @returns {string}
      */
     function getQuery() {
@@ -489,6 +504,7 @@ function urlSplit(url) {
     /**
      * Returns the query parts from the request part of the given url as array.
      *
+     * @private
      * @returns {Array}
      */
     function getQueryList() {
@@ -511,6 +527,7 @@ function urlSplit(url) {
     /**
      * Returns all parameters from the request part of the given url as object list.
      *
+     * @private
      * @returns {Object}
      */
     function getQueryObject() {
@@ -543,12 +560,14 @@ function urlSplit(url) {
     /**
      * Returns the value of the given parameter in the given url.
      *
+     * @private
      * @param   {string} param
-     * @returns {string}
+     * @returns {string|null}
      */
     function getQueryValue(param) {
         var parameterObject = getQueryObject(),
-            value, item;
+            value           = null,
+            item;
 
         for (item in parameterObject) {
             if (parameterObject.hasOwnProperty(item) && item == param) {
@@ -564,7 +583,8 @@ function urlSplit(url) {
      * Returns the fragment from the request part of the given url.
      *
      * The fragment is also known as anchor.
-     * 
+     *
+     * @private
      * @returns {string}
      */
     function getFragment() {
@@ -583,48 +603,6 @@ function urlSplit(url) {
         return cache.fragment = fragment;
     }
 
-
-    /**
-     * Returns the url of the current page request.
-     *
-     * @returns {Object}
-     */
-    function getAll() {
-        var all;
-
-        resetCache();
-        enableCaching();
-
-        all = {
-            protocol      : getProtocol(),
-            authorization : getAuthorization(),
-            username      : getUsername(),
-            password      : getPassword(),
-            domain        : getDomain(),
-            port          : getPort(),
-            domainList    : getDomainList(),
-            domainLevels  : getDomainLevels(),
-            request       : getRequest(),
-            path          : getPath(),
-            pathList      : getPathList(),
-            file          : getFile(),
-            fileName      : getFileName(),
-            fileExtension : getFileExtension(),
-            directory     : getDirectory(),
-            directoryList : getDirectoryList(),
-            query         : getQuery(),
-            queryList     : getQueryList(),
-            queryObject   : getQueryObject(),
-            fragment      : getFragment()
-        };
-
-        disableCaching();
-        resetCache();
-
-        return all;
-    }
-
-    // --------------------------------------------------------------------------------------------------------- Private
 
     /**
      * Returns the url of the current page request.
@@ -668,28 +646,39 @@ function urlSplit(url) {
 
     // -----------------------------------------------------------------------------------------------------------------
 
-    return {
-        getAll             : getAll,
-        getProtocol        : getProtocol,
-        getAuthorization   : getAuthorization,
-        getUsername        : getUsername,
-        getPassword        : getPassword,
-        getDomain          : getDomain,
-        getPort            : getPort,
-        getDomainList      : getDomainList,
-        getDomainLevels    : getDomainLevels,
-        getRequest         : getRequest,
-        getPath            : getPath,
-        getPathList        : getPathList,
-        getFile            : getFile,
-        getFileName        : getFileName,
-        getFileExtension   : getFileExtension,
-        getDirectory       : getDirectory,
-        getDirectoryList   : getDirectoryList,
-        getQuery           : getQuery,
-        getQueryList       : getQueryList,
-        getFragment        : getFragment,
-        getQueryObject     : getQueryObject,
-        getQueryValue      : getQueryValue
-    }
+    return (function () {
+        var all;
+
+        resetCache();
+        enableCaching();
+
+        all = {
+            protocol      : getProtocol(),
+            authorization : getAuthorization(),
+            username      : getUsername(),
+            password      : getPassword(),
+            domain        : getDomain(),
+            port          : getPort(),
+            domainList    : getDomainList(),
+            domainLevels  : getDomainLevels(),
+            request       : getRequest(),
+            path          : getPath(),
+            pathList      : getPathList(),
+            file          : getFile(),
+            fileName      : getFileName(),
+            fileExtension : getFileExtension(),
+            directory     : getDirectory(),
+            directoryList : getDirectoryList(),
+            query         : getQuery(),
+            queryList     : getQueryList(),
+            queryObject   : getQueryObject(),
+            fragment      : getFragment(),
+            getQueryValue : getQueryValue
+        };
+
+        disableCaching();
+        resetCache();
+
+        return all;
+    })();
 }
