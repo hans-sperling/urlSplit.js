@@ -7,6 +7,32 @@
 function urlSplit(url) {
     'use strict';
 
+    var cacheEnabled = false,
+        reset        = {
+            protocol      : null,
+            authorization : null,
+            username      : null,
+            password      : null,
+            domain        : null,
+            port          : null,
+            domainList    : null,
+            domainLevels  : null,
+            request       : null,
+            path          : null,
+            pathList      : null,
+            file          : null,
+            fileName      : null,
+            fileExtension : null,
+            directory     : null,
+            directoryList : null,
+            query         : null,
+            queryList     : null,
+            queryObject   : null,
+            fragment      : null
+        },
+        cache        = reset;
+
+
     // If no url is given the current page request will be taken.
     url = url ? url : getUrl();
 
@@ -17,9 +43,18 @@ function urlSplit(url) {
      * @returns {string}
      */
     function getProtocol() {
-        var splitDomain = url.split('://');
+        var cached = cache.protocol,
+            splitDomain,
+            protocol;
 
-        return (splitDomain[1] ? splitDomain[0] : '');
+        if (cacheEnabled && cached !== null) {
+            return cached;
+        }
+
+        splitDomain = url.split('://');
+        protocol    = (splitDomain[1] ? splitDomain[0] : '');
+
+        return cache.protocol = protocol;
     }
 
 
@@ -30,8 +65,15 @@ function urlSplit(url) {
      * @returns {string}
      */
     function getAuthorization() {
-        var protocol = getProtocol(),
-            authorization, domainSplit;
+        var cached = cache.authorization,
+            protocol, domainSplit,
+            authorization;
+
+        if (cacheEnabled && cached !== null) {
+            return cached;
+        }
+
+        protocol = getProtocol();
 
         if (protocol) {
             url = url.replace(protocol + '://', '');
@@ -40,7 +82,7 @@ function urlSplit(url) {
         domainSplit   = url.split('@');
         authorization = domainSplit[1] ? domainSplit[0] : '';
 
-        return authorization;
+        return cache.authorization = authorization;
     }
 
 
@@ -50,10 +92,19 @@ function urlSplit(url) {
      * @returns {string}
      */
     function getUsername() {
-        var authorization      = getAuthorization(),
-            authorizationSplit = authorization.split(':');
+        var cached = cache.username,
+            authorization, authorizationSplit,
+            username;
 
-            return authorizationSplit[0];
+        if (cacheEnabled && cached !== null) {
+            return cached;
+        }
+
+        authorization      = getAuthorization();
+        authorizationSplit = authorization.split(':');
+        username           = authorizationSplit[0];
+
+        return cache.username = username;
     }
 
 
@@ -63,10 +114,19 @@ function urlSplit(url) {
      * @returns {string}
      */
     function getPassword() {
-        var authorization      = getAuthorization(),
-            authorizationSplit = authorization.split(':');
+        var cached = cache.password,
+            authorization, authorizationSplit,
+            password;
 
-        return (authorizationSplit[1] ? authorizationSplit[1] : '');
+        if (cacheEnabled && cached !== null) {
+            return cached;
+        }
+
+        authorization      = getAuthorization();
+        authorizationSplit = authorization.split(':');
+        password           = (authorizationSplit[1] ? authorizationSplit[1] : '');
+
+        return cache.password = password;
     }
 
 
@@ -76,9 +136,16 @@ function urlSplit(url) {
      * @returns {string}
      */
     function getDomain() {
-        var protocol      = getProtocol(),
-            authorization = getAuthorization(),
+        var cached = cache.domain,
+            protocol, authorization,
             domain;
+
+        if (cacheEnabled && cached !== null) {
+            return cached;
+        }
+
+        protocol      = getProtocol();
+        authorization = getAuthorization();
 
         if (protocol) {
             url = url.replace(protocol + '://', '');
@@ -91,22 +158,7 @@ function urlSplit(url) {
         // Remove request and port if exists
         domain = url.split('/')[0].split(':')[0];
 
-        return domain;
-    }
-
-
-    /**
-     * Returns the port of the given url.
-     *
-     * @returns {string}
-     */
-    function getPort() {
-        var protocol      = getProtocol(),
-            authorization = getAuthorization(),
-            urlReplace    = url.replace(protocol + '://', '').replace(authorization + '@', ''),
-            urlSplit      = urlReplace.split('/')[0].split(':');
-
-        return (urlSplit[1] !== undefined ? urlSplit[1] : '');
+        return cache.domain = domain;
     }
 
 
@@ -116,9 +168,19 @@ function urlSplit(url) {
      * @returns {Array}
      */
     function getDomainList() {
-        var domain = getDomain();
+        var cached = cache.domainList,
+            domain,
+            domainList;
 
-        return domain.split('.');
+        if (cacheEnabled && cached !== null) {
+            return cached;
+        }
+
+        domain     = getDomain();
+        domainList = domain.split('.');
+
+        // noinspection JSValidateTypes
+        return cache.domainList = domainList;
     }
 
 
@@ -128,9 +190,43 @@ function urlSplit(url) {
      * @returns {Array}
      */
     function getDomainLevels() {
-        var domainList = getDomainList();
+        var cached = cache.domainLevels,
+            domainList,
+            domainLevels;
 
-        return (domainList.slice().reverse());
+        if (cacheEnabled && cached !== null) {
+            return cached;
+        }
+
+        domainList   = getDomainList();
+        domainLevels = domainList.slice().reverse();
+
+        // noinspection JSValidateTypes
+        return cache.domainLevels = domainLevels;
+    }
+
+
+    /**
+     * Returns the port of the given url.
+     *
+     * @returns {string}
+     */
+    function getPort() {
+        var cached = cache.port,
+            protocol, authorization, urlReplace, urlSplit,
+            port;
+
+        if (cacheEnabled && cached !== null) {
+            return cached;
+        }
+
+        protocol      = getProtocol();
+        authorization = getAuthorization();
+        urlReplace    = url.replace(protocol + '://', '').replace(authorization + '@', '');
+        urlSplit      = urlReplace.split('/')[0].split(':');
+        port          = (urlSplit[1] !== undefined ? urlSplit[1] : '');
+
+        return cache.port = port;
     }
 
 
@@ -140,18 +236,26 @@ function urlSplit(url) {
      * @returns {string}
      */
     function getRequest() {
-        var protocol      = getProtocol(),
-            authorization = getAuthorization(),
-            domain        = getDomain(),
-            port          = getPort(),
-            request, replace;
+        var cached = cache.request,
+            protocol, authorization, domain, port, replace,
+            request;
 
-        replace = url.replace(protocol + '://', '');
-        replace = replace.replace(authorization + '@', '');
-        replace = replace.replace(domain, '');
-        request = replace.replace(':' + port, '');
+        if (cacheEnabled && cached !== null) {
+            console.log('cached');
+            return cached;
+        }
 
-        return request ;
+        protocol      = getProtocol();
+        authorization = getAuthorization();
+        domain        = getDomain();
+        port          = getPort();
+        replace       = url.replace(protocol + '://', '');
+        replace       = replace.replace(authorization + '@', '');
+        replace       = replace.replace(domain, '');
+        request       = replace.replace(':' + port, '');
+
+        // noinspection JSValidateTypes
+        return cache.request = request;
     }
 
 
@@ -161,9 +265,18 @@ function urlSplit(url) {
      * @returns {string}
      */
     function getPath() {
-        var request = getRequest();
+        var cached = cache.path,
+            request,
+            path;
 
-        return request.split('?')[0];
+        if (cacheEnabled && cached !== null) {
+            return cached;
+        }
+
+        request = getRequest();
+        path    = request.split('?')[0];
+
+        return cache.path = path;
     }
 
 
@@ -173,10 +286,17 @@ function urlSplit(url) {
      * @returns {Array}
      */
     function getPathList() {
-        var path     = getPath(),
-            pathList = path.split('/'),
-            amount   = pathList.length,
-            i;
+        var cached = cache.pathList,
+            path, amount, i,
+            pathList;
+
+        if (cacheEnabled && cached !== null) {
+            return cached;
+        }
+
+        path     = getPath();
+        pathList = path.split('/');
+        amount   = pathList.length;
 
         for (i = 0; i < amount; i++) {
             pathList[i] = pathList[i];
@@ -194,7 +314,8 @@ function urlSplit(url) {
             }
         }
 
-        return pathList;
+        // noinspection JSValidateTypes
+        return cache.pathList = pathList;
     }
 
 
@@ -204,9 +325,16 @@ function urlSplit(url) {
      * @returns {string}
      */
     function getFile() {
-        var pathList = getPathList(),
-            lastItem = pathList[(pathList.length - 1)],
-            file, itemSplitDash, itemSplitDot;
+        var cached = cache.file,
+            pathList, lastItem, itemSplitDash, itemSplitDot,
+            file;
+
+        if (cacheEnabled && cached !== null) {
+            return cached;
+        }
+
+        pathList = getPathList();
+        lastItem = pathList[(pathList.length - 1)];
 
         if (lastItem) {
             itemSplitDash = lastItem ? lastItem.split('/') : '';
@@ -223,7 +351,7 @@ function urlSplit(url) {
             file = '';
         }
 
-        return file;
+        return cache.file = file;
     }
 
 
@@ -233,9 +361,16 @@ function urlSplit(url) {
      * @returns {string}
      */
     function getFileName() {
-        var file      = getFile(),
-            fileSplit = file.split('.'),
+        var cached = cache.fileName,
+            file, fileSplit,
             fileName;
+
+        if (cacheEnabled && cached !== null) {
+            return cached;
+        }
+
+        file      = getFile();
+        fileSplit = file.split('.');
 
         if (fileSplit.length > 1) {
             fileName = fileSplit.slice(0, -1).join('.');
@@ -244,7 +379,7 @@ function urlSplit(url) {
             fileName = fileSplit[0];
         }
 
-        return fileName;
+        return cache.fileName = fileName;
     }
 
 
@@ -254,11 +389,21 @@ function urlSplit(url) {
      * @returns {string}
      */
     function getFileExtension() {
-        var file         = getFile(),
-            fileName     = getFileName(),
-            fileReplaced = file.replace(fileName , '');
+        var cached = cache.fileExtension,
+        file, fileName, fileReplaced,
+        fileExtension;
 
-          return (fileReplaced[0] == '.' ? fileReplaced.replace('.', '') : fileReplaced);
+        if (cacheEnabled && cached !== null) {
+            return cached;
+        }
+
+        file          = getFile();
+        fileName      = getFileName();
+        fileReplaced  = file.replace(fileName , '');
+        fileExtension = (fileReplaced[0] == '.' ? fileReplaced.replace('.', '') : fileReplaced);
+
+        // noinspection JSValidateTypes
+        return cache.fileExtension = fileExtension;
     }
 
 
@@ -270,9 +415,19 @@ function urlSplit(url) {
      * @returns {string}
      */
     function getDirectory() {
-        var directoryList = getDirectoryList();
+        var cached = cache.directory,
+            directoryList,
+            directory;
 
-        return (directoryList.join(''));
+        if (cacheEnabled && cached !== null) {
+            return cached;
+        }
+
+        directoryList = getDirectoryList();
+        directory     = directoryList.join('');
+
+        // noinspection JSValidateTypes
+        return cache.directory = directory;
     }
 
 
@@ -284,9 +439,16 @@ function urlSplit(url) {
      * @returns {Array}
      */
     function getDirectoryList() {
-        var pathList = getPathList(),
-            file     = getFile(),
+        var cached = cache.directoryList,
+            pathList, file,
             directoryList;
+
+        if (cacheEnabled && cached !== null) {
+            return cached;
+        }
+
+        pathList = getPathList();
+        file     = getFile();
 
         if (file) {
             directoryList = pathList.slice(0, -1);
@@ -295,7 +457,7 @@ function urlSplit(url) {
             directoryList = pathList;
         }
 
-        return directoryList;
+        return cache.directoryList = directoryList;
     }
 
 
@@ -307,10 +469,19 @@ function urlSplit(url) {
      * @returns {string}
      */
     function getQuery() {
-        var request      = getRequest(),
-            requestSplit = request.split('?');
+        var cached = cache.query,
+            request, requestSplit,
+            query;
 
-        return (requestSplit[1] !== undefined ? requestSplit[1].split('#')[0] : '');
+        if (cacheEnabled && cached !== null) {
+            return cached;
+        }
+
+        request      = getRequest();
+        requestSplit = request.split('?');
+        query        = (requestSplit[1] !== undefined ? requestSplit[1].split('#')[0] : '');
+
+        return cache.query = query;
     }
 
 
@@ -320,9 +491,19 @@ function urlSplit(url) {
      * @returns {Array}
      */
     function getQueryList() {
-        var query = getQuery();
+        var cached = cache.queryList,
+            query,
+            queryList;
 
-        return (query.split('&'));
+        if (cacheEnabled && cached !== null) {
+            return cached;
+        }
+
+        query     = getQuery();
+        queryList = query.split('&');
+
+        // noinspection JSValidateTypes
+        return cache.queryList = queryList;
     }
 
 
@@ -332,22 +513,29 @@ function urlSplit(url) {
      * @returns {Object}
      */
     function getQueryObject() {
-        var queryList       = getQueryList(),
-            amount          = queryList.length,
-            parameterObject = {},
-            i, item;
+        var cached = cache.queryObject,
+            queryList, amount, i, item,
+            queryObject;
 
 
+        if (cacheEnabled && cached !== null) {
+            return cached;
+        }
+
+        queryList   = getQueryList();
+        amount      = queryList.length;
+        queryObject = {};
 
         for (i = 0; i < amount; i++) {
             item = queryList[i].split('=');
 
             if (item[0] !== undefined && item[1] !== undefined) {
-                parameterObject[item[0]] = item[1];
+                queryObject[item[0]] = item[1];
             }
         }
 
-        return parameterObject;
+        // noinspection JSValidateTypes
+        return cache.queryObject = queryObject;
     }
 
 
@@ -379,26 +567,34 @@ function urlSplit(url) {
      * @returns {string}
      */
     function getFragment() {
-        var request      = getRequest(),
-            requestSplit = request.split('#');
+        var cached = cache.fragment,
+            request, requestSplit,
+            fragment;
 
-        return (requestSplit[1] !== undefined ? requestSplit[1] : '');
+        if (cacheEnabled && cached !== null) {
+            return cached;
+        }
+
+        request      = getRequest();
+        requestSplit = request.split('#');
+        fragment     = (requestSplit[1] !== undefined ? requestSplit[1] : '');
+
+        return cache.fragment = fragment;
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * Returns the url of the current page request.
      *
-     * @returns {string}
+     * @returns {Object}
      */
-    function getUrl() {
-        return window.location.href;
-    }
-
-
     function getAll() {
-        return {
+        var all;
+
+        resetCache();
+        enableCaching();
+
+        all = {
             protocol      : getProtocol(),
             authorization : getAuthorization(),
             username      : getUsername(),
@@ -420,6 +616,53 @@ function urlSplit(url) {
             queryObject   : getQueryObject(),
             fragment      : getFragment()
         };
+
+        disableCaching();
+        resetCache();
+
+        return all;
+    }
+
+    // --------------------------------------------------------------------------------------------------------- Private
+
+    /**
+     * Returns the url of the current page request.
+     *
+     * @private
+     * @returns {string}
+     */
+    function getUrl() {
+        return window.location.href;
+    }
+
+
+    /**
+     * Resets the cache data.
+     *
+     * @private
+     */
+    function resetCache() {
+        cache = reset;
+    }
+
+
+    /**
+     * Enables the caching.
+     *
+     * @private
+     */
+    function enableCaching() {
+        cacheEnabled = true;
+    }
+
+
+    /**
+     * Disables the caching.
+     *
+     * @private
+     */
+    function disableCaching() {
+        cacheEnabled = false;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
