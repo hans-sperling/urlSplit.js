@@ -2,6 +2,7 @@
 
 Splits / Extracts the current url or a given one into its partials.
 
+
 ## Parts of an regular web url
                                                             | request ----------------------------------------------- |
                                                             | path ------------------- |                              |
@@ -15,6 +16,7 @@ Splits / Extracts the current url or a given one into its partials.
                               |   |         2nd-level-domain                  filename
                               |   3rd-level-domain
                               4th-level-domain
+
 
 ## Methods
 
@@ -39,9 +41,10 @@ Splits / Extracts the current url or a given one into its partials.
 - getQueryObject();
 - getQueryValue(param);
 - getFragment();
+- getAll();
 
 
-## Usage
+## Usage and Example
 
 ```javascript
     var url = 'https://username:password@www.subdomain.example.com:1234/folder/subfolder/index.html?search=products&sort=false#top';
@@ -65,7 +68,32 @@ Splits / Extracts the current url or a given one into its partials.
     console.log(urlSplit(url).getQuery());             // 'search=products&sort=false#top'
     console.log(urlSplit(url).getQueryList());         // ['search=products', 'sort=false']
     console.log(urlSplit(url).getQueryObject());       // { search: products, sort: false}
+    console.log(urlSplit(url).getFragment());          // 'top'
     console.log(urlSplit(url).getQueryValue('search'); // 'products'
     console.log(urlSplit(url).getQueryValue('sort');   // 'false'
-    console.log(urlSplit(url).getFragment());          // 'top'
+    console.log(urlSplit(url).getAll());
+    // Output
+    /* {
+     *     protocol      : 'https',
+     *     authorization : 'username:password,
+     *     username      : 'username',
+     *     password      : 'password',
+     *     domain        : 'www.subdomain.example.com',
+     *     port          : '1234',
+     *     domainList    : ['www', 'subdomain', 'example', 'com'],
+     *     domainLevels  : ['com', 'example', 'subdomain', 'www'],
+     *     request       : '/folder/subfolder/index.html?search=products&sort=false#top',
+     *     path          : '/folder/subfolder/index.html',
+     *     pathList      : ['/', 'folder/', 'subfolder/', 'index.html'],
+     *     file          : 'index.html',
+     *     fileName      : 'index',
+     *     fileExtension : 'html',
+     *     directory     : '/folder/subfolder/',
+     *     directoryList : ['/', 'folder/', 'subfolder/'],
+     *     query         : 'search=products&sort=false#top',
+     *     queryList     : ['search=products', 'sort=false'],
+     *     queryObject   : { search: products, sort: false},
+     *     fragment      : 'top'
+     * }
+     */
 ```

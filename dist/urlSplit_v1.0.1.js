@@ -1,9 +1,9 @@
-/*! urlSplit - Splits / Extracts the current url or a given one into its partials. - Version: 1.0.0 */
+/*! urlSplit - Splits / Extracts the current url or a given one into its partials. - Version: 1.0.1 */
 /**
  * Splits / Extracts the current url or a given one into its partials.
  *
- * @param   {string} url
- * @returns {{getAll: getAll, getProtocol: getProtocol, getAuthorization: getAuthorization, getUsername: getUsername, getPassword: getPassword, getDomain: getDomain, getPort: getPort, getDomainList: getDomainList, getDomainLevels: getDomainLevels, getRequest: getRequest, getPath: getPath, getPathList: getPathList, getFile: getFile, getFileName: getFileName, getFileExtension: getFileExtension, getDirectory: getDirectory, getDirectoryList: getDirectoryList, getQuery: getQuery, getQueryList: getQueryList, getFragment: getFragment, getQueryObject: getQueryObject, getQueryValue: getQueryValue}}
+ * @param   {string|null} url - URL-String
+ * @returns {Object}
  */
 function urlSplit(url) {
     'use strict';
