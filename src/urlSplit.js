@@ -420,31 +420,6 @@ function urlSplit(url) {
 
 
     /**
-     * Returns the directory from the request part of the given url.
-     *
-     * The directory is the path excluding the requested file.
-     *
-     * @private
-     * @returns {string}
-     */
-    function getDirectory() {
-        var cached = cache.directory,
-            directoryList,
-            directory;
-
-        if (cacheEnabled && cached !== null) {
-            return cached;
-        }
-
-        directoryList = getDirectoryList();
-        directory     = directoryList.join('');
-
-        // noinspection JSValidateTypes
-        return cache.directory = directory;
-    }
-
-
-    /**
      * Returns the directory parts from the request part of the given url as array.
      *
      * The directory parts are the path parts excluding the file.
@@ -472,6 +447,31 @@ function urlSplit(url) {
         }
 
         return cache.directoryList = directoryList;
+    }
+
+
+    /**
+     * Returns the directory from the request part of the given url.
+     *
+     * The directory is the path excluding the requested file.
+     *
+     * @private
+     * @returns {string}
+     */
+    function getDirectory() {
+        var cached = cache.directory,
+            directoryList,
+            directory;
+
+        if (cacheEnabled && cached !== null) {
+            return cached;
+        }
+
+        directoryList = getDirectoryList();
+        directory     = directoryList.join('');
+
+        // noinspection JSValidateTypes
+        return cache.directory = directory;
     }
 
 
