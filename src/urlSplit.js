@@ -159,7 +159,8 @@ function urlSplit(url) {
             url = url.replace(authorization + '@', '');
         }
 
-        // Remove request and port if exists
+        // @todo - Use getRequest() and getPort() to replace them with empty-string
+        // @todo - Try to save other partials if cache is enabled
         domain = url.split('/')[0].split(':')[0];
 
         return cache.domain = domain;
@@ -205,7 +206,7 @@ function urlSplit(url) {
         }
 
         domainList   = getDomainList();
-        domainLevels = domainList.slice().reverse();
+        domainLevels = domainList.slice().reverse(); // slice() creates a copy of the array to prevent changing domainList-Array
 
         // noinspection JSValidateTypes
         return cache.domainLevels = domainLevels;
@@ -252,6 +253,7 @@ function urlSplit(url) {
             return cached;
         }
 
+        // @todo - A better way is to split once at the first / character instead of removing partials
         protocol      = getProtocol();
         authorization = getAuthorization();
         domain        = getDomain();
@@ -308,7 +310,7 @@ function urlSplit(url) {
         amount   = pathList.length;
 
         for (i = 0; i < amount; i++) {
-            pathList[i] = pathList[i];
+            //pathList[i] = pathList[i]; // @todo - Check this, why this was necessary
 
             if (i < amount - 1) {
                 pathList[i] = pathList[i] + '/';
@@ -318,7 +320,7 @@ function urlSplit(url) {
                     pathList.splice(-1);
                 }
                 else {
-                    pathList[i] = pathList[i];
+                    //pathList[i] = pathList[i]; // @todo - Check this, why this was necessary
                 }
             }
         }
@@ -565,16 +567,15 @@ function urlSplit(url) {
      */
     function getQueryValue(param) {
         var parameterObject = getQueryObject(),
-            value           = null,
             item;
 
         for (item in parameterObject) {
             if (parameterObject.hasOwnProperty(item) && item == param) {
-                value = parameterObject[item];
+                return parameterObject[item];
             }
         }
 
-        return value;
+        return null;
     }
 
 
