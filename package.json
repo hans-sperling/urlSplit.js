@@ -1,11 +1,11 @@
 {
     "name"        : "urlSplit",
-    "version"     : "2.0.0",
+    "version"     : "2.0.2",
     "description" : "Splits / Extracts the current url or a given one into its partials.",
     "keywords" : [
-        "file",
-        "loading",
-        "async",
+        "url",
+        "split",
+        "partials",
         "javascript"
     ],
     "repository" : {
