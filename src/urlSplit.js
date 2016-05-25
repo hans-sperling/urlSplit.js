@@ -246,22 +246,17 @@ function urlSplit(url) {
      */
     function getRequest() {
         var cached = cache.request,
-            protocol, authorization, domain, port, replace,
+            protocol, urlWithoutProtocol, position,
             request;
 
         if (cacheEnabled && cached !== null) {
             return cached;
         }
 
-        // @todo - A better way is to split once at the first / character instead of removing partials
-        protocol      = getProtocol();
-        authorization = getAuthorization();
-        domain        = getDomain();
-        port          = getPort();
-        replace       = url.replace(protocol + '://', '');
-        replace       = replace.replace(authorization + '@', '');
-        replace       = replace.replace(domain, '');
-        request       = replace.replace(':' + port, '');
+        protocol           = getProtocol();
+        urlWithoutProtocol = url.replace(protocol + '://', '');
+        position           = urlWithoutProtocol.indexOf('/');
+        request            = position ? urlWithoutProtocol.substr(position) : '';
 
         // noinspection JSValidateTypes
         return cache.request = request;

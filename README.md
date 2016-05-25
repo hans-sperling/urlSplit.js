@@ -18,6 +18,18 @@ Splits / Extracts the current url or a given one into its partials.
                               4th-level-domain
 
 
+## Initialize
+```javascript
+
+    var url = urlSplit(); // Call with current url
+    
+    // or
+    var url = urlSplit('https://your.supersweet-domain.com/index.html?search=products');
+    
+    url.getQueryValue('search'); // Returns : 'products'
+```
+
+
 ## Methods
 
 ### getQueryValue(param);
@@ -25,7 +37,7 @@ Splits / Extracts the current url or a given one into its partials.
 - Return: `string|null` The value of the given parameter or null if the parameter doesn't exist
 
 
-## Usage and Example
+## Example
 
 ```javascript
     var urlString      = 'https://username:password@www.subdomain.example.com:1234/folder/subfolder/index.html?search=products&sort=false#top',
