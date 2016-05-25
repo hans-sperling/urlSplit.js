@@ -1,4 +1,4 @@
-/*! urlSplit - Splits / Extracts the current url or a given one into its partials. - Version: 2.0.0 */
+/*! urlSplit - Splits / Extracts the current url or a given one into its partials. - Version: 2.1.0 */
 /**
  * Splits / Extracts the current url or a given one into its partials.
  *
@@ -160,7 +160,8 @@ function urlSplit(url) {
             url = url.replace(authorization + '@', '');
         }
 
-        // Remove request and port if exists
+        // @todo - Use getRequest() and getPort() to replace them with empty-string
+        // @todo - Try to save other partials if cache is enabled
         domain = url.split('/')[0].split(':')[0];
 
         return cache.domain = domain;
@@ -206,7 +207,7 @@ function urlSplit(url) {
         }
 
         domainList   = getDomainList();
-        domainLevels = domainList.slice().reverse();
+        domainLevels = domainList.slice().reverse(); // slice() creates a copy of the array to prevent changing domainList-Array
 
         // noinspection JSValidateTypes
         return cache.domainLevels = domainLevels;
@@ -246,21 +247,17 @@ function urlSplit(url) {
      */
     function getRequest() {
         var cached = cache.request,
-            protocol, authorization, domain, port, replace,
+            protocol, urlWithoutProtocol, position,
             request;
 
         if (cacheEnabled && cached !== null) {
             return cached;
         }
 
-        protocol      = getProtocol();
-        authorization = getAuthorization();
-        domain        = getDomain();
-        port          = getPort();
-        replace       = url.replace(protocol + '://', '');
-        replace       = replace.replace(authorization + '@', '');
-        replace       = replace.replace(domain, '');
-        request       = replace.replace(':' + port, '');
+        protocol           = getProtocol();
+        urlWithoutProtocol = url.replace(protocol + '://', '');
+        position           = urlWithoutProtocol.indexOf('/');
+        request            = position ? urlWithoutProtocol.substr(position) : '';
 
         // noinspection JSValidateTypes
         return cache.request = request;
@@ -309,7 +306,7 @@ function urlSplit(url) {
         amount   = pathList.length;
 
         for (i = 0; i < amount; i++) {
-            pathList[i] = pathList[i];
+            //pathList[i] = pathList[i]; // @todo - Check this, why this was necessary
 
             if (i < amount - 1) {
                 pathList[i] = pathList[i] + '/';
@@ -319,7 +316,7 @@ function urlSplit(url) {
                     pathList.splice(-1);
                 }
                 else {
-                    pathList[i] = pathList[i];
+                    //pathList[i] = pathList[i]; // @todo - Check this, why this was necessary
                 }
             }
         }
@@ -421,31 +418,6 @@ function urlSplit(url) {
 
 
     /**
-     * Returns the directory from the request part of the given url.
-     *
-     * The directory is the path excluding the requested file.
-     *
-     * @private
-     * @returns {string}
-     */
-    function getDirectory() {
-        var cached = cache.directory,
-            directoryList,
-            directory;
-
-        if (cacheEnabled && cached !== null) {
-            return cached;
-        }
-
-        directoryList = getDirectoryList();
-        directory     = directoryList.join('');
-
-        // noinspection JSValidateTypes
-        return cache.directory = directory;
-    }
-
-
-    /**
      * Returns the directory parts from the request part of the given url as array.
      *
      * The directory parts are the path parts excluding the file.
@@ -473,6 +445,31 @@ function urlSplit(url) {
         }
 
         return cache.directoryList = directoryList;
+    }
+
+
+    /**
+     * Returns the directory from the request part of the given url.
+     *
+     * The directory is the path excluding the requested file.
+     *
+     * @private
+     * @returns {string}
+     */
+    function getDirectory() {
+        var cached = cache.directory,
+            directoryList,
+            directory;
+
+        if (cacheEnabled && cached !== null) {
+            return cached;
+        }
+
+        directoryList = getDirectoryList();
+        directory     = directoryList.join('');
+
+        // noinspection JSValidateTypes
+        return cache.directory = directory;
     }
 
 
@@ -566,16 +563,15 @@ function urlSplit(url) {
      */
     function getQueryValue(param) {
         var parameterObject = getQueryObject(),
-            value           = null,
             item;
 
         for (item in parameterObject) {
             if (parameterObject.hasOwnProperty(item) && item == param) {
-                value = parameterObject[item];
+                return parameterObject[item];
             }
         }
 
-        return value;
+        return null;
     }
 
 
