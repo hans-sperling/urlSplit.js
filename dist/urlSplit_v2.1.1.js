@@ -1,4 +1,4 @@
-/*! urlSplit - Splits / Extracts the current url or a given one into its partials. - Version: 2.1.0 */
+/*! urlSplit - Splits / Extracts the current url or a given one into its partials. - Version: 2.1.1 */
 /**
  * Splits / Extracts the current url or a given one into its partials.
  *
@@ -289,6 +289,8 @@ function urlSplit(url) {
     /**
      * Returns the path parts from the request part of the given url as array.
      *
+     * Splits the path on every slash-char and re-adds a slash-char except the last item
+     *
      * @private
      * @returns {Array}
      */
@@ -306,17 +308,13 @@ function urlSplit(url) {
         amount   = pathList.length;
 
         for (i = 0; i < amount; i++) {
-            //pathList[i] = pathList[i]; // @todo - Check this, why this was necessary
-
             if (i < amount - 1) {
-                pathList[i] = pathList[i] + '/';
+                pathList[i] +=  '/';
             }
             else {
+                // If request ends with a slash-char remove this item from pathList
                 if (pathList[i] === '') {
                     pathList.splice(-1);
-                }
-                else {
-                    //pathList[i] = pathList[i]; // @todo - Check this, why this was necessary
                 }
             }
         }
