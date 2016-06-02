@@ -167,6 +167,7 @@ function urlSplit(url) {
 
         domain = url.replace(request, '');
 
+        // noinspection JSValidateTypes
         return cache.domain = domain;
     }
 
