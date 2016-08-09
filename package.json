@@ -1,5 +1,5 @@
 {
-    "name"        : "urlSplit",
+    "name"        : "urlSplit.js",
     "version"     : "2.1.1",
     "description" : "Splits / Extracts the current url or a given one into its partials.",
     "keywords" : [
@@ -10,7 +10,7 @@
     ],
     "repository" : {
         "type": "git",
-        "url": "https://github.com/hans-sperling/urlSplit"
+        "url": "https://github.com/hans-sperling/urlSplit.js"
     },
     "devDependencies" : {
         "grunt"                : "1.x.x",
@@ -19,7 +19,7 @@
         "grunt-contrib-concat" : "latest"
     },
     "bugs" : {
-        "url"   : "https://github.com/hans-sperling/urlSplit/issues",
+        "url"   : "https://github.com/hans-sperling/urlSplit.js/issues",
         "email" : "info@bluejade.de"
     },
     "contributors" : [{
