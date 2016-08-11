@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>urlSplit</title>
+    <link href="example/css/jquery.json-viewer.css" type="text/css" rel="stylesheet" />
+    <script src="dist/urlSplit.js"></script>
+    <script src="example/js/jquery.js"></script>
+    <script src="example/js/jquery.json-viewer.js"></script>
+</head>
+<body>
+    <h1>urlSplit.js</h1>
+    <p>Splits / Extracts the current url or a given one into its partials.</p>
+    <form>
+        <fieldset>
+            <input id="DomainURL"
+                   type="radio"
+                   title="Use the current domain URL for splitting"
+                   name="UrlType"
+                   value="">
+            <label for="DomainURL">Domain URL</label>
+
+            <input id="ExampleURL"
+                   type="radio"
+                   title="Use an example URL for splitting"
+                   name="UrlType"
+                   value="https://username:password@www.subdomain.example.com:1234/folder/subfolder/index.html?search=products&sort=false#top">
+            <label for="ExampleURL">Example URL</label>
+
+            <input id="EmptyURL"
+                   type="radio"
+                   title="Use your own URL-String for splitting"
+                   name="UrlType"
+                   value="">
+            <label for="EmptyURL">Your own URL-String</label>
+        </fieldset>
+
+        <label for="Url">URL:</label>
+        <input id="Url"
+               title="Type in url to split it in its partials"
+               value="https://username:password@www.subdomain.example.com:1234/folder/subfolder/index.html?search=products&sort=false#top"
+               style="width:400px;">
+        <button id="Split">Split</button>
+    </form>
+
+    <pre id="json-renderer"></pre>
+
+    <script>
+        var $DomainURL  = $('#DomainURL'),
+            $ExampleURL = $('#ExampleURL'),
+            $EmptyURL   = $('#EmptyURL'),
+            $Split      = $('#Split'),
+            $Url        = $('#Url'),
+            isEmptyUrl  = false,
+            urlString   = '',
+            splitUrl    = null;
+
+        // -------------------------------------------------------------------------------------------------------- Init
+
+        (function() {
+            $ExampleURL.attr('checked', 'checked');
+
+            urlString = 'https://username:password@www.subdomain.example.com:1234/folder/subfolder/index.html?search=products&sort=false#top';
+
+            $Url.attr('disabled', true);
+        })();
+
+        // ------------------------------------------------------------------------------------------------------ Events
+
+        $DomainURL.on('click', function onClick(e) {
+            urlString = document.location.href;
+            isEmptyUrl = false;
+
+            $Url.attr('disabled', true);
+            $Url.val(urlString);
+        });
+
+        $ExampleURL.on('click', function onClick(e) {
+            urlString = this.value;
+            isEmptyUrl = false;
+
+            $Url.attr('disabled', true);
+            $Url.val(urlString);
+        });
+
+        $EmptyURL.on('click', function onClick(e) {
+            isEmptyUrl = true;
+
+            $Url.val('');
+            $Url.attr('disabled', false);
+        });
+
+        $Split.on('click', function onClick(e) {
+            e.preventDefault();
+
+            if (isEmptyUrl) {
+                urlString = $Url.val();
+            }
+
+            splitUrl = urlSplit(urlString);
+
+            $('#json-renderer').jsonViewer(splitUrl, {
+                collapsed  : false,
+                withQuotes : false
+            });
+        });
+    </script>
+</body>
+</html>

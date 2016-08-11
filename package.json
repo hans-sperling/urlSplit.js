@@ -1,5 +1,5 @@
 {
-    "name"        : "urlSplit.js",
+    "name"        : "urlSplit",
     "version"     : "2.1.1",
     "description" : "Splits / Extracts the current url or a given one into its partials.",
     "keywords" : [
