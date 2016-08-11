@@ -1,4 +1,4 @@
-/*! urlSplit - Splits / Extracts the current url or a given one into its partials. - Version: 2.1.1 */
+/*! urlSplit - Splits / Extracts the current url or a given one into its partials. - Version: 2.1.2 */
 /**
  * Splits / Extracts the current url or a given one into its partials.
  *
@@ -257,7 +257,7 @@ function urlSplit(url) {
         protocol           = getProtocol();
         urlWithoutProtocol = url.replace(protocol + '://', '');
         position           = urlWithoutProtocol.indexOf('/');
-        request            = position ? urlWithoutProtocol.substr(position) : '';
+        request            = (position > -1) ? urlWithoutProtocol.substr(position) : '';
 
         // noinspection JSValidateTypes
         return cache.request = request;
