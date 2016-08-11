@@ -43,3 +43,7 @@ a.json-placeholder {
 a.json-placeholder:hover {
   text-decoration: underline;
 }
+
+#json-renderer {
+    margin-left: 20px;
+}
