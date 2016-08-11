@@ -256,7 +256,7 @@ function urlSplit(url) {
         protocol           = getProtocol();
         urlWithoutProtocol = url.replace(protocol + '://', '');
         position           = urlWithoutProtocol.indexOf('/');
-        request            = position ? urlWithoutProtocol.substr(position) : '';
+        request            = (position > -1) ? urlWithoutProtocol.substr(position) : '';
 
         // noinspection JSValidateTypes
         return cache.request = request;

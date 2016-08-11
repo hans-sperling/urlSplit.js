@@ -1,6 +1,6 @@
 {
-    "name"        : "urlSplit.js",
-    "version"     : "2.1.1",
+    "name"        : "urlSplit",
+    "version"     : "2.1.2",
     "description" : "Splits / Extracts the current url or a given one into its partials.",
     "keywords" : [
         "url",
