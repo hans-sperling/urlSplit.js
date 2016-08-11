@@ -17,6 +17,9 @@ Splits / Extracts the current url or a given one into its partials.
                               |   3rd-level-domain
                               4th-level-domain
 
+## Demo / Example / Try it
+
+[Click to try a demo of the latest urlSplit.js version](https://hans-sperling.github.io/urlSplit.js/)
 
 ## Initialize
 ```javascript
