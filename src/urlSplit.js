@@ -141,7 +141,7 @@ function urlSplit(url) {
      */
     function getDomain() {
         var cached = cache.domain,
-            protocol, authorization,
+            protocol, authorization, port, request,
             domain;
 
         if (cacheEnabled && cached !== null) {
@@ -150,6 +150,8 @@ function urlSplit(url) {
 
         protocol      = getProtocol();
         authorization = getAuthorization();
+        port          = getPort();
+        request       = getRequest();
 
         if (protocol) {
             url = url.replace(protocol + '://', '');
@@ -159,10 +161,13 @@ function urlSplit(url) {
             url = url.replace(authorization + '@', '');
         }
 
-        // @todo - Use getRequest() and getPort() to replace them with empty-string
-        // @todo - Try to save other partials if cache is enabled
-        domain = url.split('/')[0].split(':')[0];
+        if (port) {
+            url = url.replace(':' + port, '');
+        }
 
+        domain = url.replace(request, '');
+
+        // noinspection JSValidateTypes
         return cache.domain = domain;
     }
 

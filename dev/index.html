@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>urlSplit</title>
+        <script src="../src/urlSplit.js"></script>
+    </head>
+    <body>
+        <script>
+            var urlString      = 'https://username:password@www.subdomain.example.com:1234/folder/subfolder/index.html?search=products&sort=false#top',
+                url            = urlSplit(urlString),
+                urlQueryParam1 = url.getQueryValue('search'),
+                urlQueryParam2 = url.getQueryValue('sort'),
+                urlQueryParam3 = url.getQueryValue('undefined');
+
+            console.dir(url);
+        </script>
+    </body>
+</html>
