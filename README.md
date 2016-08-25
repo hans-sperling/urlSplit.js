@@ -8,7 +8,9 @@ Splits / Extracts the current url or a given one into its partials.
                                                             | path ------------------- |                              |
             | authorization | | domain -------------- |     | directory ---- || file - | | query ---------------- |   |
             |               | |                       |     |                ||        | |                        |   |
+    
     https://username:password@www.subdomain.example.com:1234/folder/subfolder/index.html?search=products&sort=false#top
+    
     |       |        |        |   |         |       |   |   |       |         |     |    |      |        |    |     |
     |       username |        |   |         |       |   |   folder  folder    |     |    |      value    |    value |
     protocol         password |   |         |       |   port                  |     |    parameter       parameter  |
